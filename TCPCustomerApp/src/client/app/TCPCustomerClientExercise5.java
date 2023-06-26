@@ -5,14 +5,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.util.Scanner;
 
-import model.Customer;
-
-public class TCPCustomersClient {
+public class TCPCustomerClientExercise5 {
 
     public static void main(String[] args) {
         try {
-            System.out.println("\tExecuting TCPCustomerClient");
+            System.out.println("\tExecuting TCPCustomerClientExercise5");
 
             // Server information
             int serverPortNo = 8089;
@@ -25,7 +24,9 @@ public class TCPCustomersClient {
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 
             // 2. Send request to the server
-            String customerName = "John Doe";
+            Scanner scanner = new Scanner(System.in);
+            System.out.print("\tEnter customer name: ");
+            String customerName = scanner.nextLine();
             outputStream.writeObject(customerName);
             outputStream.flush();
             System.out.println("\tRequesting customer name: " + customerName + "\n");
@@ -33,17 +34,12 @@ public class TCPCustomersClient {
             // Create stream to receive response from the server
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
 
-            // 3. Read response from the server - cast object
-            Customer customer = (Customer) inputStream.readObject();
+            // 3. Read response from the server
+            String customerInfo = (String) inputStream.readObject();
 
-            // 4. Process response - display the object
-            if (customer != null) {
-                System.out.println("\tCustomer Information (From the server)");
-                System.out.println("\tCustomer Id: " + customer.getCustomerId());
-                System.out.println("\tName: " + customer.getCustomerName());
-            } else {
-                System.out.println("\tCustomer not found!");
-            }
+            // 4. Process response - display the customer information
+            System.out.println("\tReceived customer information:");
+            System.out.println("\t" + customerInfo);
 
             // Close streams and socket
             outputStream.close();

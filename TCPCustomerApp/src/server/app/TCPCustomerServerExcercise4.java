@@ -9,7 +9,7 @@ import java.net.Socket;
 import model.Customer;
 import server.controller.CustomerData;
 
-public class TCPCustomersServer {
+public class TCPCustomerServerExcercise4 {
 
     public static void main(String[] args) {
         int portNo = 8089;

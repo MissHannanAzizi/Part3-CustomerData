@@ -6,17 +6,12 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
-import model.Customer;
-import server.controller.CustomerData;
-
-public class TCPCustomerServer {
+public class TCPCustomerServerExercise5 {
 
     public static void main(String[] args) {
-        int portNo = 8088;
+        int portNo = 8089;
 
-        CustomerData customerData = new CustomerData();
-
-        System.out.println("\n\tExecuting TCPCustomerServer");
+        System.out.println("\n\tExecuting TCPCustomerServerExercise5");
 
         try {
             System.out.println("\tWaiting for next request");
@@ -30,27 +25,29 @@ public class TCPCustomerServer {
                 Socket clientSocket = serverSocket.accept();
 
                 // 4. Process request - create input stream to read request
-                // Request - customer id:int
+                // Request - customer name:string
                 ObjectInputStream inputStream = new ObjectInputStream(clientSocket.getInputStream());
 
-                // Read customer id from client
-                int customerId = inputStream.readInt();
-                System.out.println("\tRequest for customer id: " + customerId);
+                // Read customer name from client
+                String customerName = (String) inputStream.readObject();
+                System.out.println("\tRequest for customer name: " + customerName);
 
-                // Get customer
-                Customer customer = customerData.searchCustomerById(customerId);
+                // TODO: Implement customer search logic based on customer name
+                // For demonstration, we'll use a dummy customer object
+                int customerId = 1001;
+                String customerInfo = "Customer Name: " + customerName + ", Customer ID: " + customerId;
 
                 // 5. Respond to client
                 ObjectOutputStream outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
-                outputStream.writeObject(customer);
-                System.out.println("\tSending customer: " + customer);
+                outputStream.writeObject(customerInfo);
+                System.out.println("\tSending customer: " + customerInfo);
 
                 // Close streams and socket
                 inputStream.close();
                 outputStream.close();
                 clientSocket.close();
             }
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
