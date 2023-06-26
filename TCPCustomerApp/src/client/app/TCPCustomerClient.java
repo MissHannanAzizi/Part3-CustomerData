@@ -25,10 +25,10 @@ public class TCPCustomerClient {
             ObjectOutputStream outputStream = new ObjectOutputStream(socket.getOutputStream());
 
             // 2. Send request to the server
-            int customerId = 5;
-            outputStream.writeInt(customerId);
+            String customerName = "John Doe";
+            outputStream.writeObject(customerName);
             outputStream.flush();
-            System.out.println("\tRequesting customer id: " + customerId + "\n");
+            System.out.println("\tRequesting customer name: " + customerName + "\n");
 
             // Create stream to receive response from the server
             ObjectInputStream inputStream = new ObjectInputStream(socket.getInputStream());
