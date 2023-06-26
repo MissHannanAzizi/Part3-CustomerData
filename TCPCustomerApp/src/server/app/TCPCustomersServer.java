@@ -9,7 +9,7 @@ import java.net.Socket;
 import model.Customer;
 import server.controller.CustomerData;
 
-public class TCPCustomerServer {
+public class TCPCustomersServer {
 
     public static void main(String[] args) {
         int portNo = 8089;
@@ -30,15 +30,15 @@ public class TCPCustomerServer {
                 Socket clientSocket = serverSocket.accept();
 
                 // 4. Process request - create input stream to read request
-                // Request - customer id:int
+                // Request - customer name:String
                 ObjectInputStream inputStream = new ObjectInputStream(clientSocket.getInputStream());
 
-                // Read customer id from client
-                int customerId = inputStream.readInt();
-                System.out.println("\tRequest for customer id: " + customerId);
+                // Read customer name from client
+                String customerName = (String) inputStream.readObject();
+                System.out.println("\tRequest for customer name: " + customerName);
 
                 // Get customer
-                Customer customer = customerData.searchCustomerById(customerId);
+                Customer customer = customerData.searchCustomerByName(customerName);
 
                 // 5. Respond to client
                 ObjectOutputStream outputStream = new ObjectOutputStream(clientSocket.getOutputStream());
@@ -50,7 +50,7 @@ public class TCPCustomerServer {
                 outputStream.close();
                 clientSocket.close();
             }
-        } catch (IOException e) {
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
     }
