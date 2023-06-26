@@ -6,12 +6,17 @@ import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import model.Customer;
+import server.controller.CustomerData;
+
 public class TCPCustomerServerExercise5 {
 
     public static void main(String[] args) {
         int portNo = 8089;
 
         System.out.println("\n\tExecuting TCPCustomerServerExercise5");
+
+        CustomerData customerData = new CustomerData();
 
         try {
             System.out.println("\tWaiting for next request");
@@ -32,10 +37,17 @@ public class TCPCustomerServerExercise5 {
                 String customerName = (String) inputStream.readObject();
                 System.out.println("\tRequest for customer name: " + customerName);
 
-                // TODO: Implement customer search logic based on customer name
-                // For demonstration, we'll use a dummy customer object
-                int customerId = 1001;
-                String customerInfo = "Customer Name: " + customerName + ", Customer ID: " + customerId;
+                // Get customer by name from CustomerData
+                Customer customer = customerData.searchCustomerByName(customerName);
+
+                // Prepare customer information
+                String customerInfo;
+                if (customer != null) {
+                    customerInfo = "Customer Name: " + customer.getCustomerName() + ", Customer ID: "
+                            + customer.getCustomerId();
+                } else {
+                    customerInfo = "Customer not found!";
+                }
 
                 // 5. Respond to client
                 ObjectOutputStream outputStream = new ObjectOutputStream(clientSocket.getOutputStream());

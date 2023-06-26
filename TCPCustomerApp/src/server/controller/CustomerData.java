@@ -95,7 +95,7 @@ public class CustomerData{
         return null;
     }
 
-    public List<Customer> getCustomerList() {
+    public List<Customer> getAllCustomers() {
         // Method 4: Return a list of customers
         return customerList;
     }
